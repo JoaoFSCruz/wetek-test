@@ -145,10 +145,7 @@ class Product
             'id' => $this->getId(),
             'name' => $this->getName(),
             'price' => $this->getPrice(),
-            'rating' => $this->getRating(),
-            'variations' => json_decode($this->getVariations(), true),
-            'created_at' => $this->getCreatedAt(),
-            'updated_at' => $this->getUpdatedAt()
+            'rating' => $this->getRating()
         ];
     }
 }

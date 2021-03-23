@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use App\Repository\ProductRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -33,15 +34,39 @@ class ProductController extends AbstractController
     /**
      * @Route("/api/products", name="api.product.index", methods={"GET"})
      *
+     * @param  \Symfony\Component\HttpFoundation\Request  $request
+     * @param  \Knp\Component\Pager\PaginatorInterface  $paginator
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function index(): Response
+    public function index(Request $request, PaginatorInterface $paginator): Response
     {
-        $products = $this->productRepository->findAll();
+        $order_by = [];
+        $propertyValues = [];
+
+        $allProperties = $request->query->all();
+        unset($allProperties['page']);
+
+        foreach ($allProperties as $property => $value) {
+            if ($value === 'asc' || $value === 'desc') {
+                $order_by[$property] = $value;
+                continue;
+            }
+
+            $propertyValues[$property] = $value;
+        }
+        
+        $query = $this->productRepository->findBy($propertyValues, $order_by);
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->get('page', 1),
+            5
+        );
 
         $productsAsArray = [];
 
-        foreach ($products as $product) {
+        foreach ($pagination->getItems() as $product) {
             $productsAsArray[] = $product->toArray();
         }
 
