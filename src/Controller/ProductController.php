@@ -39,8 +39,14 @@ class ProductController extends AbstractController
     {
         $products = $this->productRepository->findAll();
 
+        $productsAsArray = [];
+
+        foreach ($products as $product) {
+            $productsAsArray[] = $product->toArray();
+        }
+
         return new JsonResponse(
-            $products,
+            $productsAsArray,
             Response::HTTP_OK
         );
     }
@@ -136,6 +142,10 @@ class ProductController extends AbstractController
     {
         $this->productRepository->delete($product);
 
-        return $this->json('Product successfully deleted');
+        return new JsonResponse([
+            'message' => 'Product successfully deleted'
+        ],
+        Response::HTTP_OK
+        );
     }
 }
