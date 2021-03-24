@@ -78,6 +78,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/api/products", name="api.product.store", methods={"POST"})
+     *
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
@@ -96,7 +97,6 @@ class ProductController extends AbstractController
         $errors = $this->validator->validate($data, $constraints);
 
         $errorMessages = [];
-
         foreach ($errors as $error) {
             $errorMessages[substr($error->getPropertyPath(), 1, -1)] = $error->getMessage();
         }
@@ -118,6 +118,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/api/products/{id}", name="api.products.update", methods={"PUT"})
+     *
      * @param  \App\Entity\Product  $product
      * @param  \Symfony\Component\HttpFoundation\Request  $request
      *
@@ -137,7 +138,6 @@ class ProductController extends AbstractController
         $errors = $this->validator->validate($data, $constraints);
 
         $errorMessages = [];
-
         foreach ($errors as $error) {
             $errorMessages[substr($error->getPropertyPath(), 1, -1)] = $error->getMessage();
         }
@@ -159,6 +159,7 @@ class ProductController extends AbstractController
 
     /**
      * @Route("/api/products/{id}", name="api.products.delete", methods={"DELETE"})
+     *
      * @param  \App\Entity\Product  $product
      *
      * @return \Symfony\Component\HttpFoundation\JsonResponse
