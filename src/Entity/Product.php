@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Core\Annotation\ApiResource;
 
@@ -43,17 +45,29 @@ class Product
     private $price;
 
     /**
-     * The rating the users had given to the product.
+     * The average rating the users had given to the product.
      *
      * @ORM\Column(type="float")
      * @Assert\NotBlank
      * @Assert\Range(
      *     min = 0,
      *     max = 5,
-     *     notInRangeMessage = "The rating must be between {{ min }}  and {{ max }}."
+     *     notInRangeMessage = "The average rating must be between {{ min }}  and {{ max }}."
      * )
      */
-    private $rating;
+    private $averageRating;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="products")
+     */
+    private $ratings;
+
+    /**
+     *  Total number of rating votes.
+     *
+     * @ORM\Column(type="integer")
+     */
+    private $numberOfVotes;
 
     /**
      * Variable set of properties.
@@ -97,14 +111,14 @@ class Product
         $this->price = $price;
     }
 
-    public function getRating(): float
+    public function getAverageRating(): float
     {
-        return $this->rating;
+        return $this->averageRating;
     }
 
-    public function setRating($rating): void
+    public function setAverageRating($averageRating): void
     {
-        $this->rating = $rating;
+        $this->averageRating = $averageRating;
     }
 
     public function getVariations(): ?string
@@ -127,6 +141,26 @@ class Product
         return $this->updated_at;
     }
 
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function setRatings($ratings): void
+    {
+        $this->ratings = $ratings;
+    }
+
+    public function getNumberOfVotes(): Integer
+    {
+        return $this->numberOfVotes;
+    }
+
+    public function setNumberOfVotes($numberOfVotes): void
+    {
+        $this->numberOfVotes = $numberOfVotes;
+    }
+
     /**
      * @ORM\PrePersist
      * @ORM\PreUpdate
@@ -139,13 +173,19 @@ class Product
         }
     }
 
+    public function vote(int $rating): void
+    {
+        $this->averageRating = round((($this->averageRating * $this->numberOfVotes) + $rating) / ($this->numberOfVotes + 1), 1);
+        $this->numberOfVotes++;
+    }
+
     public function toArray(): array
     {
         return [
             'id' => $this->getId(),
             'name' => $this->getName(),
             'price' => $this->getPrice(),
-            'rating' => $this->getRating()
+            'rating' => $this->getAverageRating()
         ];
     }
 }

@@ -31,7 +31,8 @@ class ProductRepository extends ServiceEntityRepository
         $product = new Product();
         $product->setName($productData['name']);
         $product->setPrice($productData['price']);
-        $product->setRating($productData['rating']);
+        $product->setAverageRating($productData['averageRating']);
+        $product->setNumberOfVotes($productData['numberOfVotes']);
         $product->setVariations(json_encode($productData['variations'] ?? []));
 
         $this->getEntityManager()->persist($product);
@@ -52,7 +53,8 @@ class ProductRepository extends ServiceEntityRepository
     {
         $product->setName($productData['name']);
         $product->setPrice($productData['price']);
-        $product->setRating($productData['rating']);
+        $product->setAverageRating($productData['averageRating']);
+        $product->setNumberOfVotes($productData['numberOfVotes']);
         $product->setVariations(json_encode($productData['variations'] ?? []));
 
         $this->getEntityManager()->flush();

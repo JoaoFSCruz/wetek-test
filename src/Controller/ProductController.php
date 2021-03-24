@@ -90,7 +90,8 @@ class ProductController extends AbstractController
         $constraints = new Assert\Collection([
             'name' => [ new Assert\NotBlank(), new Assert\Length(['max' => 255])],
             'price' => new Assert\NotBlank(),
-            'rating' => new Assert\NotBlank(),
+            'averageRating' => new Assert\NotBlank(),
+            'numberOfVotes' => new Assert\NotBlank(),
             'variations' => new Assert\Optional()
         ]);
 
@@ -131,7 +132,8 @@ class ProductController extends AbstractController
         $constraints = new Assert\Collection([
             'name' => [ new Assert\NotBlank(), new Assert\Length(['max' => 255])],
             'price' => new Assert\NotBlank(),
-            'rating' => new Assert\NotBlank(),
+            'averageRating' => new Assert\NotBlank(),
+            'numberOfVotes' => new Assert\NotBlank(),
             'variations' => new Assert\Optional()
         ]);
 

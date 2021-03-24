@@ -34,6 +34,11 @@ class User implements UserInterface
      */
     private $tokens;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Rating", mappedBy="users", fetch="EXTRA_LAZY")
+     */
+    private $ratings;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -64,6 +69,26 @@ class User implements UserInterface
         return $this->tokens;
     }
 
+    public function getTokens(): Collection
+    {
+        return $this->tokens;
+    }
+
+    public function setTokens($tokens): void
+    {
+        $this->tokens = $tokens;
+    }
+
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function setRatings($ratings): void
+    {
+        $this->ratings = $ratings;
+    }
+
     public function getRoles(): ?string
     {
         return null;
@@ -83,5 +108,4 @@ class User implements UserInterface
     {
         return null;
     }
-
 }
