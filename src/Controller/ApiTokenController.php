@@ -24,6 +24,7 @@ class ApiTokenController extends AbstractController
      * ApiTokenController constructor.
      *
      * @param  \App\Repository\UserRepository  $userRepository
+     * @param  \App\Repository\ApiTokenRepository  $apiTokenRepository
      * @param  \Symfony\Component\Validator\Validator\ValidatorInterface  $validator
      */
     public function __construct(UserRepository $userRepository, ApiTokenRepository $apiTokenRepository, ValidatorInterface $validator)

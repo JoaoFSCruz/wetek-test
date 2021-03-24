@@ -2,13 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\RatingRepository;
 use Doctrine\ORM\Mapping as ORM;
-use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=RatingRepository::class)
  * @ORM\Table(name="user_product")
+ *
+ * @ApiResource(
+ *     collectionOperations={"post"},
+ *     itemOperations={},
+ * )
  */
 class Rating
 {
